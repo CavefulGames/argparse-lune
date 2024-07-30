@@ -1586,17 +1586,31 @@ type option = {
 	default: (self: option , string) -> (option),
 	defmode: (self: option , string) -> (option),
 	convert: (self: option , {[number]: typeof(io.ewrite) | typeof(tonumber) | typeof(string.lower)}) -> (option),
-}
+	hidden: (self: option , boolean) -> (option),
+	hidden_name: (self: option , string) -> (option),
+	argname: (self: option , string | {[number]: string}) -> (),
+} | (string) -> (option)
 
 type command = {
 	summary: (self: command , string) -> (command),
 	description: (self: command , string) -> (command),
 	convert: (self: command , typeof(io.ewrite) | typeof(tonumber)) -> (command),
+	action: action,
 }
 
-type action = (self:Option_args_return, (args:any? , _: any?, excptions: {}? ) -> ({
+type action = (self:Option_args_return, (args:any? , _: any?, excptions: {}?) -> ({
+	init: ({[number]: string}) -> (nil & _parser),
+}) ) -> () | (self:Option_args_return, (string) -> ({
 	init: ({[number]: string}) -> (nil & _parser),
 }) ) -> ()
+
+type flag = option & _parser & (self: flag, string) -> (action) & action & (string) -> (action)
+
+type help_max_width = {
+	usage_margin: (self: help_max_width , number) -> (help_max_width),
+	help_description_margin: (self: help_max_width , number) -> (help_max_width),
+	help_vertical_space: (self: help_max_width , number) -> (help_max_width),
+}
 
 type parser = {	
 	name: (self: parser, name: string) -> (parser & _parser),
@@ -1606,12 +1620,15 @@ type parser = {
 	error: (self: parser, msg: string) -> (nil & _parser),
 	argument: (self: parser, name:string, description:string?, default:string?, convert: {}?, args: args?) -> (argument & _parser),
 	option: (self: parser, name: string, description: string, default: string?, convert: {}?, args: args?, count: number?) -> (option & _parser),
-	flag: (self: parser, string , string) -> (option & _parser & action),
+	flag: (self: parser, string , string? , boolean?) -> (flag),
 	mutex: <T>(self: parser , ...T & _parser) -> (nil),
 	command: (self: parser , name: string, description: string?, epilog: string?) -> (command & _parser),
 	command_target: (self: parser , string) -> (command & _parser),
 	require_command: (self: parser , boolean) -> (parser & _parser),
 	convert: (self: parser , typeof(io.ewrite) | typeof(tonumber)) -> (parser & _parser),
+	action: action,
+	group: <T>(self: parser , name: string , ...T & _parser) -> (),
+	help_max_width: (self: parser , number) -> (help_max_width & _parser)
 };
 
 return (argparse::any) :: (name: string?, description: string? , epilog: string?) -> (parser)
