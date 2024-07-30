@@ -1566,13 +1566,15 @@ type argument = {
 	choices: (self: argument , {[number]: string}) -> (argument & _parser),
 }
 
+type Option_args_return = option & _parser & action
+
 type option = {
-	args: ((self: option , number) -> (option & _parser))&
-	((self: option , "A-B"|string) -> (option & _parser))&
-	((self: option , "N+"|string) -> (option & _parser))&
-	((self: option , "?") -> (option & _parser))&
-	((self: option , "*") -> (option & _parser))&
-	((self: option , "+") -> (option & _parser)),
+	args: ((self: option , number) -> (Option_args_return))&
+	((self: option , "A-B"|string) -> (Option_args_return))&
+	((self: option , "N+"|string) -> (Option_args_return))&
+	((self: option , "?") -> (Option_args_return))&
+	((self: option , "*") -> (Option_args_return))&
+	((self: option , "+") -> (Option_args_return)),
 	choices: (self: option, {[number]: string}) -> (option),
 	count: ((self: option , number) -> (option))&
 	((self: option , "A-B"|string) -> (option))&
@@ -1592,6 +1594,10 @@ type command = {
 	convert: (self: command , typeof(io.ewrite) | typeof(tonumber)) -> (command),
 }
 
+type action = (self:Option_args_return, (args:any? , _: any?, excptions: {}? ) -> ({
+	init: ({[number]: string}) -> (nil & _parser),
+}) ) -> ()
+
 type parser = {	
 	name: (self: parser, name: string) -> (parser & _parser),
 	description: (self: parser, description: string) -> (parser & _parser),
@@ -1600,7 +1606,7 @@ type parser = {
 	error: (self: parser, msg: string) -> (nil & _parser),
 	argument: (self: parser, name:string, description:string?, default:string?, convert: {}?, args: args?) -> (argument & _parser),
 	option: (self: parser, name: string, description: string, default: string?, convert: {}?, args: args?, count: number?) -> (option & _parser),
-	flag: (self: parser, string , string) -> (option &_parser),
+	flag: (self: parser, string , string) -> (option & _parser & action),
 	mutex: <T>(self: parser , ...T & _parser) -> (nil),
 	command: (self: parser , name: string, description: string?, epilog: string?) -> (command & _parser),
 	command_target: (self: parser , string) -> (command & _parser),
