@@ -1552,4 +1552,17 @@ setmetatable(argparse, {
 	end,
 })
 
-return argparse
+type argument = {
+	args: (number) -> (),
+}
+
+type parser = {	
+	name: (self: parser, name: string) -> (parser),
+	description: (self: parser, description: string) -> (parser),
+	epilog: (self: parser, epilog: string) -> (parser),
+	parse: (self: parser) -> ({  }),
+	error: (self: parser, msg: string) -> (),
+	argument: (self: parser, name:string, description:string, default:string?, convert: {}?, args: argument?) -> (argument),
+};
+
+return (argparse::any) :: (name: string?, description: string? , epilog: string?) -> (parser)
