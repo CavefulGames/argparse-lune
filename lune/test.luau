@@ -1,24 +1,94 @@
 --!strict
 local argparse = require("..")
 
-local parser = argparse("test", "An example.")
-parser:argument "direction"
-    :args("1-3")
+local parser = argparse()
+
+print(parser:option("test"):convert(function(any)
+
+end))
+print(parser:option("test"):convert({t='w',4,""}))
+-- local parser = argparse();
+-- parser:argument "pair"
+--     :args("*")
+
+-- parser:option("test")
+--     :args("*")
+--     :description
+
+-- 타입 정의
+-- type MyObject = {
+--     name: string,
+-- }
+
+-- type TFunction = () -> (string | MyObject)
+
+-- -- t 함수 정의
+-- local function t(): TFunction
+--     return function()
+--         if math.random() > 0.5 then
+--             return "This is a string"
+--         else
+--             return { name = "chat gpt" }
+--         end
+--     end
+-- end
+
+-- -- t 함수 호출 및 처리
+-- local result = t()()
+
+-- if type(result) == "string" then
+--     print(result)
+-- elseif type(result) == "table" and result.name then
+--     print(result.name)
+-- end
+
+-- 타입 정의
+
+-- -- t 함수 정의
+-- local function t(): (MyObject) -> MyObject
+--     return function(obj: MyObject): MyObject
+--         return obj
+--     end
+-- end
+
+-- -- a 객체 생성
+-- local a: MyObject = t()({ name = "chat gpt" })
+
+-- -- a 객체를 사용
+-- print(a.name)  -- "chat gpt"
+
+
+-- print(parser:parse())
+-- print(parser:pparse())
+
+-- local parser = argparse("test", "An example.")
+--                         :name('name')
+
+-- parser:argument "direction"
+--     :args("1-3")
+
+-- parser:argument( " T " )
+--         :choices({"ttt"})
+--         :args("*")
 
     -- parser:option("-o --output", "Output file.", "a.out"):args("1+")
     -- parser:option("-I --include", "Include locations."):count("*")
 
-    parser:flag("-v --verbose", "Sets verbosity level.")
-    :count "0-2"
-    :target "verbosity"
+    -- parser:flag("-v --verbose", "Sets verbosity level.")
+    -- :count "0-2"
+    -- :target "verbosity"
+
+-- parser:flag("t" , "P")
+            
+-- parser:option("test", "P")
 
 
 
-parser:mutex(
-    parser:option("", "T")
-)
+-- parser:mutex(
+--     parser:option("", "T")
+-- )
 
-parser:command("" , true)
+-- parser:command("")
 
 -- parser:option("", description)
 --    :choices {"north", "south", "east", "west"}   

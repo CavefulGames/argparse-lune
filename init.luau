@@ -1552,83 +1552,41 @@ setmetatable(argparse, {
 	end,
 })
 
-type args = {number | string | "A-B" | "N+" | "?" | "*" | "+"}
+type Args = {  }
 
-type _parser = boolean
+type args = number| string | "A-B" | "N+" | "?" | "*" | "+"
 
 type argument = {
-	args: ((self: argument , number) -> (argument & _parser))&
-	((self: argument , "A-B"|string) -> (argument & _parser))&
-	((self: argument , "N+"|string) -> (argument & _parser))&
-	((self: argument , "?") -> (argument & _parser))&
-	((self: argument , "*") -> (argument & _parser))&
-	((self: argument , "+") -> (argument & _parser)),
-	choices: (self: argument , {[number]: string}) -> (argument & _parser),
+	args: (self: argument, args: args) -> (argument),
+	choices: (self: argument, {[number]: string}) -> (argument),
 }
-
-type Option_args_return = option & _parser & action
 
 type option = {
-	args: ((self: option , number) -> (Option_args_return))&
-	((self: option , "A-B"|string) -> (Option_args_return))&
-	((self: option , "N+"|string) -> (Option_args_return))&
-	((self: option , "?") -> (Option_args_return))&
-	((self: option , "*") -> (Option_args_return))&
-	((self: option , "+") -> (Option_args_return)),
-	choices: (self: option, {[number]: string}) -> (option),
-	count: ((self: option , number) -> (option))&
-	((self: option , "A-B"|string) -> (option))&
-	((self: option , "N+"|string) -> (option))&
-	((self: option , "?") -> (option))&
-	((self: option , "*") -> (option))&((self: option , "+") -> (option)),
-	target: (self: option , string) -> (option & _parser),
-	description: (self: option , string) -> (option),
-	default: (self: option , string) -> (option),
-	defmode: (self: option , string) -> (option),
-	convert: (self: option , {[number]: typeof(io.ewrite) | typeof(tonumber) | typeof(string.lower)}) -> (option),
-	hidden: (self: option , boolean) -> (option),
-	hidden_name: (self: option , string) -> (option),
-	argname: (self: option , string | {[number]: string}) -> (),
-} | (string) -> (option)
-
-type command = {
-	summary: (self: command , string) -> (command),
-	description: (self: command , string) -> (command),
-	convert: (self: command , typeof(io.ewrite) | typeof(tonumber)) -> (command),
-	action: action,
+	name: (self: option, name: string) -> (option),
+	description: (self: option, description: string) -> (option),
+	default: <T>(self: option, default: T) -> (option),
+	convert: <V>(self: option, convert: {} | (...any) -> (...any)) -> (option),
+	args: (self: option, args: args) -> (option),
 }
 
-type action = (self:Option_args_return, (args:any? , _: any?, excptions: {}?) -> ({
-	init: ({[number]: string}) -> (nil & _parser),
-}) ) -> () | (self:Option_args_return, (string) -> ({
-	init: ({[number]: string}) -> (nil & _parser),
-}) ) -> ()
+type flag = {
 
-type flag = option & _parser & (self: flag, string) -> (action) & action & (string) -> (action)
-
-type help_max_width = {
-	usage_margin: (self: help_max_width , number) -> (help_max_width),
-	help_description_margin: (self: help_max_width , number) -> (help_max_width),
-	help_vertical_space: (self: help_max_width , number) -> (help_max_width),
 }
 
-type parser = {	
-	name: (self: parser, name: string) -> (parser & _parser),
-	description: (self: parser, description: string) -> (parser & _parser),
-	epilog: (self: parser, epilog: string) -> (parser & _parser),
-	parse: (self: parser) -> ({  } & _parser),
-	error: (self: parser, msg: string) -> (nil & _parser),
-	argument: (self: parser, name:string, description:string?, default:string?, convert: {}?, args: args?) -> (argument & _parser),
-	option: (self: parser, name: string, description: string, default: string?, convert: {}?, args: args?, count: number?) -> (option & _parser),
-	flag: (self: parser, string , string? , boolean?) -> (flag),
-	mutex: <T>(self: parser , ...T & _parser) -> (nil),
-	command: (self: parser , name: string, description: string?, epilog: string?) -> (command & _parser),
-	command_target: (self: parser , string) -> (command & _parser),
-	require_command: (self: parser , boolean) -> (parser & _parser),
-	convert: (self: parser , typeof(io.ewrite) | typeof(tonumber)) -> (parser & _parser),
-	action: action,
-	group: <T>(self: parser , name: string , ...T & _parser) -> (),
-	help_max_width: (self: parser , number) -> (help_max_width & _parser)
-};
+type Parser = {	
+	parse: (self: Parser, argv: any?) -> (Args),
+	pparse: (self: Parser, args: any?) -> (boolean, Args),
+	error: (self: Parser, msg: string) -> (),
+	name: (self: Parser, name: string) -> (Parser),
+	description: (self: Parser, description: string) -> (Parser),
+	epilog: (self: Parser, epilog: string) -> (Parser),
+	argument: (self: Parser, name: string, description: string?, default: any?, convert: any?, args: args?) -> (argument),
+	option: (self: Parser, name: string, description: string?, default: any?, convert: any?, args: args?, count: any?) -> (option),
+	flag: (self: Parser, name: string) -> (flag),
+}
 
-return (argparse::any) :: (name: string?, description: string? , epilog: string?) -> (parser)
+return (argparse::any) :: (name: string?, description: string?, epilog: string?) -> (Parser & ({
+	name: string?,
+	description: string?,
+	epilog: string?,
+}) -> (Parser))
