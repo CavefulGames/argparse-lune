@@ -1556,17 +1556,18 @@ type ArgsPras = {  }
 type InMutex = true & boolean
 
 type args = number | string | "A-B" | "N+" | "?" | "*" | "+"
-type convert = () -> () | { () -> () } | { [string]: any }
+type convert = () -> () | { () -> () } | { [string]: any } | typeof(tonumber) | typeof(io.ewrite)
 type count = number | string | "A-B" | "N+" | "?" | "*" | "+"
 
 type Name<T> = (self: T, name: string) -> (T);
 type Description<T> = (self: T, description: string) -> (T);
 type Default<T> = (self: T, default: string) -> (T);
-type Convert<T> = (self: T, convert: string) -> (T);
+type Convert<T> = (self: T, convert: convert) -> (T);
 type Args<T> = (self: T, args: args) -> (T);
 type Count<T> = (self: T, count: count) -> (T);
 type Epilog<T> = (self: T, epilog: string) -> (T);
 type Target<T> = (self: T, target: string) -> (T);
+type Require_command<T> = (self: T, boolean) -> (T);
 
 type argument = {
 	name: Name<argument>,
@@ -1597,14 +1598,17 @@ type flag = {
 	target: Target<flag>,
 } & InMutex
 
-type mutex = {
+type mutex = {  }
 
-}
+type command = Parser
+
+type command_target = Parser
 
 type Parser = {	
 	name: Name<Parser>,
 	description: Description<Parser>,
 	epilog: Epilog<Parser>,
+	require_command: Require_command<Parser>,
 
 	parse: (self: Parser, argv: {[number]: string}?) -> (ArgsPras),
 	pparse: (self: Parser, args: {[number]: string}?) -> (boolean, ArgsPras),
@@ -1613,7 +1617,9 @@ type Parser = {
 	argument: (self: Parser, name: string, description: string?, default: string?, convert: convert?, args: args?) -> (argument & InMutex),
 	option: (self: Parser, name: string, description: string?, default: string?, convert: convert?, args: args?, count: count?) -> (option & InMutex),
 	flag: (self: Parser, name: string, description: string?, default: string?, convert: convert?, args: args?, count: count?) -> (flag & InMutex),
-	mutex: (self: Parser, argument_or_option: InMutex, ...InMutex?) -> (mutex)
+	mutex: (self: Parser, argument_or_option: InMutex, ...InMutex?) -> (mutex),
+	command: (self: Parser, name: string, description: string?, epilog: string?) -> (command),
+	command_target: (self: Parser, name: string, description: string?, epilog: string?) -> (command_target),
 }
 
 return (argparse::any) :: (name: string?, description: string?, epilog: string?) -> (Parser & ({

@@ -2,6 +2,23 @@
 local argparse = require("..")
 
 local parser = argparse()
+print(
+    parser:argument("test"):convert(tonumber)
+)
+
+-- print(parser.defmode)
+--     :require_command(false)
+-- parser:command("install")
+--     :require_command(false)
+
+    -- :summary("st")
+-- print(parser:command("install")
+--     :name("testing")
+-- :description("test"):epilog("wwww"):argument("test"))
+
+-- print(parser:command("st")
+--     :name("testing")
+-- :description("test"):epilog("wwww"):summary())
 
 -- print(parser:mutex(parser:argument("testing"):name("T"):args(""):name(""), parser:description("F"):name("T"):argument("www")))
 
