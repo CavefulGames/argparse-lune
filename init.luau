@@ -1552,37 +1552,68 @@ setmetatable(argparse, {
 	end,
 })
 
-type Args = {  }
+type ArgsPras = {  }
+type InMutex = true & boolean
 
-type args = number| string | "A-B" | "N+" | "?" | "*" | "+"
+type args = number | string | "A-B" | "N+" | "?" | "*" | "+"
+type convert = () -> () | { () -> () } | { [string]: any }
+type count = number | string | "A-B" | "N+" | "?" | "*" | "+"
+
+type Name<T> = (self: T, name: string) -> (T);
+type Description<T> = (self: T, description: string) -> (T);
+type Default<T> = (self: T, default: string) -> (T);
+type Convert<T> = (self: T, convert: string) -> (T);
+type Args<T> = (self: T, args: args) -> (T);
+type Count<T> = (self: T, count: count) -> (T);
+type Epilog<T> = (self: T, epilog: string) -> (T);
+type Target<T> = (self: T, target: string) -> (T);
 
 type argument = {
-	args: (self: argument, args: args) -> (argument),
-	choices: (self: argument, {[number]: string}) -> (argument),
-}
+	name: Name<argument>,
+	description: Description<argument>,
+	default: Default<argument>,
+	convert: Convert<argument>,
+	args: Args<argument>,
+	target: Target<argument>,
+} & InMutex
 
 type option = {
-	name: (self: option, name: string) -> (option),
-	description: (self: option, description: string) -> (option),
-	default: <T>(self: option, default: T) -> (option),
-	convert: <V>(self: option, convert: {} | (...any) -> (...any)) -> (option),
-	args: (self: option, args: args) -> (option),
-}
+	name: Name<option>,
+	description: Description<option>,
+	default: Default<option>,
+	convert: Convert<option>,
+	args: Args<option>,
+	count: Count<option>,
+	target: Target<option>,
+} & InMutex
 
 type flag = {
+	name: Name<flag>,
+	description: Description<flag>,
+	default: Default<flag>,
+	convert: Convert<flag>,
+	args: Args<flag>,
+	count: Count<flag>,
+	target: Target<flag>,
+} & InMutex
+
+type mutex = {
 
 }
 
 type Parser = {	
-	parse: (self: Parser, argv: any?) -> (Args),
-	pparse: (self: Parser, args: any?) -> (boolean, Args),
-	error: (self: Parser, msg: string) -> (),
-	name: (self: Parser, name: string) -> (Parser),
-	description: (self: Parser, description: string) -> (Parser),
-	epilog: (self: Parser, epilog: string) -> (Parser),
-	argument: (self: Parser, name: string, description: string?, default: any?, convert: any?, args: args?) -> (argument),
-	option: (self: Parser, name: string, description: string?, default: any?, convert: any?, args: args?, count: any?) -> (option),
-	flag: (self: Parser, name: string) -> (flag),
+	name: Name<Parser>,
+	description: Description<Parser>,
+	epilog: Epilog<Parser>,
+
+	parse: (self: Parser, argv: {[number]: string}?) -> (ArgsPras),
+	pparse: (self: Parser, args: {[number]: string}?) -> (boolean, ArgsPras),
+	error: (self: Parser, msg: string?) -> (),
+
+	argument: (self: Parser, name: string, description: string?, default: string?, convert: convert?, args: args?) -> (argument & InMutex),
+	option: (self: Parser, name: string, description: string?, default: string?, convert: convert?, args: args?, count: count?) -> (option & InMutex),
+	flag: (self: Parser, name: string, description: string?, default: string?, convert: convert?, args: args?, count: count?) -> (flag & InMutex),
+	mutex: (self: Parser, argument_or_option: InMutex, ...InMutex?) -> (mutex)
 }
 
 return (argparse::any) :: (name: string?, description: string?, epilog: string?) -> (Parser & ({

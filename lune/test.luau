@@ -3,16 +3,44 @@ local argparse = require("..")
 
 local parser = argparse()
 
-print(parser:option("test"):convert(function(any)
+-- print(parser:mutex(parser:argument("testing"):name("T"):args(""):name(""), parser:description("F"):name("T"):argument("www")))
 
-end))
-print(parser:option("test"):convert({t='w',4,""}))
+-- parser:pparse({"-h" , "-h"})
+-- parser:flag("T")
+
+-- parser:argument(""):name("test")
+
+-- print(parser:argument("w"):args("*"):target("qwe"))
+
+
+-- parser:argument("wwww"):choices({"w"})
+
+-- -- print(parser)
+-- -- print(parser:argument(""):name("test"):description("testss"):default("wwww"):convert({}):args("*"))
+
+-- -- print(parser:option("test"):convert(function()
+
+
+-- -- end))  
+-- -- print(parser:option("test"):convert({T=0 , R=""}):count(0))
+
+-- -- print(parser:flag("test"):name(""):description("www"):default("wqeqweq"):convert({test="test"}):args("*"):count(4))
+
+-- type main2 = ({any}) -> ()
+-- local a = function(p) end :: main2
+-- a({"" , 2})
+
+-- type main = {any}
+-- local t: main = {}
+-- t={"" , 2}
+
+
 -- local parser = argparse();
 -- parser:argument "pair"
 --     :args("*")
 
 -- parser:option("test")
---     :args("*")
+--     :args("*")d
 --     :description
 
 -- 타입 정의
