@@ -1553,7 +1553,7 @@ setmetatable(argparse, {
 })
 
 type ArgsPras = {  }
-type InMutex = true & boolean
+type InMutex = number & boolean
 
 type args = number | string | "A-B" | "N+" | "?" | "*" | "+"
 type convert = () -> () | { () -> () } | { [string]: any } | typeof(tonumber) | typeof(io.ewrite)

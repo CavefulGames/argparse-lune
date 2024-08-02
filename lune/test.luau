@@ -3,7 +3,8 @@ local argparse = require("..")
 
 local parser = argparse()
 print(
-    parser:argument("test"):convert(tonumber)
+    parser:argument("test"):convert(tonumber),
+    parser:argument("test"):args("1+")
 )
 
 -- print(parser.defmode)
