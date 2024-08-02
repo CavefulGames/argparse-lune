@@ -4,7 +4,8 @@ local argparse = require("..")
 local parser = argparse()
 print(
     parser:argument("test"):convert(tonumber),
-    parser:argument("test"):args("1+")
+    parser:argument("test"):args("1+"),
+    parser:argument("w"):target("w"):name("testing")
 )
 
 -- print(parser.defmode)
