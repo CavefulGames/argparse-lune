@@ -1552,4 +1552,104 @@ setmetatable(argparse, {
 	end,
 })
 
-return argparse
+type ArgsPras = {  }
+type InMutex = number & boolean
+
+type args = number | string | "A-B" | "N+" | "?" | "*" | "+"
+type convert2 = () -> () | { () -> () } | { [string]: any } | typeof(tonumber) | typeof(io.ewrite)
+type convert = convert2 | {[number | string]: convert2}
+type count = number | string | "A-B" | "N+" | "?" | "*" | "+"
+
+type Name<T> = (self: T, name: string) -> (T);
+type Description<T> = (self: T, description: string) -> (T);
+type Default<T> = (self: T, default: any) -> (T);
+type Convert<T> = (self: T, convert: convert) -> (T);
+type Args<T> = (self: T, args: args) -> (T);
+type Count<T> = (self: T, count: count) -> (T);
+type Epilog<T> = (self: T, epilog: string) -> (T);
+type Target<T> = (self: T, target: string) -> (T);
+type Require_command<T> = (self: T, boolean) -> (T);
+type Defmode<T> = (self: T, defmode: string) -> (T);
+type Init<T> = (self: T, Init: {[number | string]: string}) -> (T);
+type Action<T> = (self:T, Action: (args: any?, _: any?, exceptions: any?) -> () | "store" | "store_true" | "store_false" | "count" | "append" | "concat") -> (T);
+type Hidden<T> = (self:T , Hidden: boolean) -> (T);
+type Argname<T> = (self: T, argname: string | {[number]: string}) -> (T);
+
+type argument = {
+	name: Name<argument>,
+	description: Description<argument>,
+	default: Default<argument>,
+	convert: Convert<argument>,
+	args: Args<argument>,
+	target: Target<argument>,
+	init: Init<argument>,	
+	action: Action<argument>,
+	hidden: Hidden<argument>,
+	argname: Argname<argument>,
+} & InMutex
+
+type option = {
+	name: Name<option>,
+	description: Description<option>,
+	default: Default<option>,
+	convert: Convert<option>,
+	args: Args<option>,
+	count: Count<option>,
+	target: Target<option>,
+	defmode: Defmode<option>,
+	init: Init<option>,	
+	action: Action<option>,
+	hidden: Hidden<option>,
+	argname: Argname<option>,
+} & InMutex
+
+type flag = {
+	name: Name<flag>,
+	description: Description<flag>,
+	default: Default<flag>,
+	convert: Convert<flag>,
+	args: Args<flag>,
+	count: Count<flag>,
+	target: Target<flag>,
+	init: Init<flag>,	
+	action: Action<flag>,
+	hidden: Hidden<flag>,
+	argname: Argname<flag>,
+} & InMutex
+
+type mutex = {  }
+
+type command = Parser
+
+type command_target = Parser
+
+type Parser = {	
+	name: Name<Parser>,
+	description: Description<Parser>,
+	epilog: Epilog<Parser>,
+	require_command: Require_command<Parser>,
+
+	parse: (self: Parser, argv: {[number]: string}?) -> (ArgsPras),
+	pparse: (self: Parser, args: {[number]: string}?) -> (boolean, ArgsPras),
+	error: (self: Parser, msg: string?) -> (),
+
+	argument: (self: Parser, name: string, description: string?, default: any?, convert: convert?, args: args?) -> (argument & InMutex),
+	option: (self: Parser, name: string, description: string?, default: any?, convert: convert?, args: args?, count: count?) -> (option & InMutex),
+	flag: (self: Parser, name: string, description: string?, default: any?, convert: convert?, args: args?, count: count?) -> (flag & InMutex),
+	mutex: (self: Parser, argument_or_option: InMutex, ...InMutex?) -> (mutex),
+	command: (self: Parser, name: string, description: string?, epilog: string?) -> (command),
+	command_target: (self: Parser, name: string, description: string?, epilog: string?) -> (command_target),
+	
+	group: (self: Parser, name: string, ...InMutex) -> (Parser),
+	help_max_width: (self: Parser, number) -> (Parser),
+	usage_margin: (self: Parser, number) -> (Parser),
+	help_usage_margin: (self: Parser, number) -> (Parser),
+	help_description_margin: (self: Parser, number) -> (Parser),
+	
+}
+
+return (argparse::any) :: (name: string?, description: string?, epilog: string?) -> (Parser & ({
+	name: string?,
+	description: string?,
+	epilog: string?,
+}) -> (Parser))
