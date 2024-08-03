@@ -2,11 +2,26 @@
 local argparse = require("..")
 
 local parser = argparse()
-print(
-    parser:argument("test"):convert(tonumber),
-    parser:argument("test"):args("1+"),
-    parser:argument("w"):target("w"):name("testing")
-)
+
+-- print(parser:command"":help_max_width(10):usage_margin(01):help_description_margin(10):help_usage_margin(10):add_complete('ww'))
+-- print(parser:option("test"):help_vertical_space(22))
+
+-- print(parser:group("testinggroup", 
+-- parser:flag('t'),parser:option('w')):flag('w'))
+
+-- parser:flag("--candy")
+-- parser:flag("--no-candy"):target("candy"):action("store_false")
+-- parser:flag("--rain", "Enable rain", false):argname({'wwqweq','ttwtqwr'})
+-- print(
+    -- parser:argument("test"):convert(tonumber),
+    -- parser:argument("test"):args("1+"),
+    -- parser:argument("w"):target("w"):name("testing")
+    -- parser:option("test"):defmode("t"):args("1+")
+    -- parser:flag"T":action(function()
+        
+    -- end):init({f='22'})
+    -- parser:option("--exceptions"):args("*"):action("concat"):init({"foo", "bar"})
+-- )
 
 -- print(parser.defmode)
 --     :require_command(false)
