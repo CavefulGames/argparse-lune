@@ -1592,7 +1592,7 @@ type Action<T> = (
 ) -> T
 type Action2<T> = (
 	self: T,
-	Action: (args: any?, _: any?, exceptions: any?) -> (),
+	Action: (args: any?, _: any?, exceptions: any?) -> ()
 ) -> (T);
 type Hidden<T> = (self: T, Hidden: boolean) -> T
 type Argname<T> = (self: T, argname: string | { [number]: string }) -> T
