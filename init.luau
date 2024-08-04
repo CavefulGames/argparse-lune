@@ -1646,6 +1646,7 @@ type Parser = {
 	description: Description<Parser>,
 	epilog: Epilog<Parser>,
 	require_command: Require_command<Parser>,
+	action: Action<Parser>,
 
 	parse: (self: Parser, argv: { [number]: string }?) -> ArgsPras,
 	pparse: (self: Parser, args: { [number]: string }?) -> (boolean, ArgsPras),
@@ -1688,12 +1689,19 @@ type Parser = {
 	help_description_margin: (self: Parser, number) -> Parser,
 }
 
-return (argparse :: any) :: (
-	name: string?,
-	description: string?,
-	epilog: string?
-) -> Parser & ({
-	name: string?,
-	description: string?,
-	epilog: string?,
-}) -> Parser
+return (argparse :: any) :: typeof(setmetatable({} :: {
+	version: string
+}, {} :: {
+	__call: (
+		self: any,
+		name: string?,
+		description: string?,
+		epilog: string?
+	) -> typeof(setmetatable({} :: Parser, {} :: {
+		__call: (self: any, {
+			name: string?,
+			description: string?,
+			epilog: string?,
+		}) -> (Parser)
+	}))
+}))

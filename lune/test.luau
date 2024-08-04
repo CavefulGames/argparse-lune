@@ -1,7 +1,10 @@
 --!strict
 local argparse = require("..")
 
-local parser = argparse()
+local parser = argparse() ({
+      
+})
+
 
 -- print(parser:command"":help_max_width(10):usage_margin(01):help_description_margin(10):help_usage_margin(10):add_complete('ww'))
 -- print(parser:option("test"):help_vertical_space(22))
