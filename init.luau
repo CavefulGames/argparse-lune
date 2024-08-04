@@ -1590,6 +1590,10 @@ type Action<T> = (
 		exceptions: any?
 	) -> () | "store" | "store_true" | "store_false" | "count" | "append" | "concat"
 ) -> T
+type Action2<T> = (
+	self: T,
+	Action: (args: any?, _: any?, exceptions: any?) -> (),
+) -> (T);
 type Hidden<T> = (self: T, Hidden: boolean) -> T
 type Argname<T> = (self: T, argname: string | { [number]: string }) -> T
 
@@ -1646,7 +1650,7 @@ type Parser = {
 	description: Description<Parser>,
 	epilog: Epilog<Parser>,
 	require_command: Require_command<Parser>,
-	action: Action<Parser>,
+	action: Action2<Parser>,
 
 	parse: (self: Parser, argv: { [number]: string }?) -> ArgsPras,
 	pparse: (self: Parser, args: { [number]: string }?) -> (boolean, ArgsPras),
