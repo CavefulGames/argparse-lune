@@ -1642,6 +1642,7 @@ type command = Parser
 type command_target = Parser
 
 type Parser = {
+	__index: Parser,
 	name: Name<Parser>,
 	description: Description<Parser>,
 	epilog: Epilog<Parser>,
@@ -1689,6 +1690,8 @@ type Parser = {
 	help_description_margin: (self: Parser, number) -> Parser,
 }
 
+type pars = typeof(setmetatable({}, {} :: Parser))
+
 return (argparse :: any) :: typeof(setmetatable({} :: {
 	version: string
 }, {} :: {
@@ -1702,6 +1705,6 @@ return (argparse :: any) :: typeof(setmetatable({} :: {
 			name: string?,
 			description: string?,
 			epilog: string?,
-		}) -> (Parser)
+		}) -> (Parser),
 	}))
 }))

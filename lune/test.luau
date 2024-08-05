@@ -1,13 +1,27 @@
 --!strict
 local argparse = require("..")
 
-local parser = argparse() ({
-      
-})
+local parser = argparse("test") 
+-- parser:command('init')
 
-parser:action(function(args: {})
+print(parser:command('w'))
+print(parser:action(function()
+    
+end))
+parser.command(parser , 'test')
+parser:name("test")
+-- print(parser:action(function()
+    
+-- end))
 
-end)
+-- parser:action(function(args: {})
+-- return '' , task.spawn(function()
+    
+-- end)
+-- end)
+-- parser:action(function()
+    
+-- end)
 
 -- print(parser:command"":help_max_width(10):usage_margin(01):help_description_margin(10):help_usage_margin(10):add_complete('ww'))
 -- print(parser:option("test"):help_vertical_space(22))
