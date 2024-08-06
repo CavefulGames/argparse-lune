@@ -1,15 +1,53 @@
 --!strict
 local argparse = require("..")
 
-local parser = argparse("test") 
--- parser:command('init')
+local parser = argparse("test")
 
-print(parser:command('w'))
-print(parser:action(function()
+parser:command("comm"):action(function()
     
-end))
-parser.command(parser , 'test')
-parser:name("test")
+end)
+
+parser:option("opti"):action(function()
+    
+end):args("1+")
+
+print(parser)
+
+-- print(typeof(parser))
+-- parser:name('www')
+
+-- parser:argument('')
+
+-- type fns = {
+--     pri: (self: fns | typeof(setmetatable({} :: fns, {} :: fns2))) -> ()
+-- }
+
+-- type fns2 = {
+--     __call: (self: any) -> (fns)
+-- }
+
+-- local wp = {
+--     pri = function(self)
+--         print(self)
+--     end
+-- }
+
+-- local pp = (wp::any)::typeof(setmetatable({} :: fns, {} :: fns2))
+-- pp():pri()
+-- pp:pri()
+
+
+
+--     parser:name"t"
+-- -- parser:command('init')
+
+-- print(parser:command('w'))
+-- print(parser:action(function()
+    
+-- end))
+-- parser.command(parser , 'test')
+-- parser:name("test")
+
 -- print(parser:action(function()
     
 -- end))
