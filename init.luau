@@ -1641,19 +1641,28 @@ type command = Parser
 
 type command_target = Parser
 
+type __callPlusType = typeof(setmetatable({} :: Parser, {} :: {
+	__call: (self: any, {
+		name: string?,
+		description: string?,
+		epilog: string?,
+	}) -> (Parser),
+}))
+
 type Parser = {
-	name: Name<Parser>,
-	description: Description<Parser>,
-	epilog: Epilog<Parser>,
-	require_command: Require_command<Parser>,
+	__index: Parser,
+	name: Name<Parser | __callPlusType>,
+	description: Description<Parser | __callPlusType>,
+	epilog: Epilog<Parser | __callPlusType>,
+	require_command: Require_command<Parser | __callPlusType>,
 	
-	action: (self: Parser, fn: (...any) -> (...any)) -> (Parser),
-	parse: (self: Parser, argv: { [number]: string }?) -> ArgsPras,
-	pparse: (self: Parser, args: { [number]: string }?) -> (boolean, ArgsPras),
-	error: (self: Parser, msg: string?) -> (),
+	action: (self: Parser | __callPlusType, fn: (...any) -> (...any)) -> (Parser),
+	parse: (self: Parser | __callPlusType, argv: { [number]: string }?) -> ArgsPras,
+	pparse: (self: Parser | __callPlusType, args: { [number]: string }?) -> (boolean, ArgsPras),
+	error: (self: Parser | __callPlusType, msg: string?) -> (),
 
 	argument: (
-		self: Parser,
+		self: Parser | __callPlusType,
 		name: string,
 		description: string?,
 		default: any?,
@@ -1661,7 +1670,7 @@ type Parser = {
 		args: args?
 	) -> argument & InMutex,
 	option: (
-		self: Parser,
+		self: Parser | __callPlusType,
 		name: string,
 		description: string?,
 		default: any?,
@@ -1670,7 +1679,7 @@ type Parser = {
 		count: count?
 	) -> option & InMutex,
 	flag: (
-		self: Parser,
+		self: Parser | __callPlusType,
 		name: string,
 		description: string?,
 		default: any?,
@@ -1678,15 +1687,15 @@ type Parser = {
 		args: args?,
 		count: count?
 	) -> flag & InMutex,
-	mutex: (self: Parser, argument_or_option: InMutex, ...InMutex?) -> mutex,
-	command: (self: Parser, name: string, description: string?, epilog: string?) -> command,
-	command_target: (self: Parser, name: string, description: string?, epilog: string?) -> command_target,
+	mutex: (self: Parser | __callPlusType, argument_or_option: InMutex, ...InMutex?) -> mutex,
+	command: (self: Parser | __callPlusType, name: string, description: string?, epilog: string?) -> command,
+	command_target: (self: Parser | __callPlusType, name: string, description: string?, epilog: string?) -> command_target,
 
-	group: (self: Parser, name: string, ...InMutex) -> Parser,
-	help_max_width: (self: Parser, number) -> Parser,
-	usage_margin: (self: Parser, number) -> Parser,
-	help_usage_margin: (self: Parser, number) -> Parser,
-	help_description_margin: (self: Parser, number) -> Parser,
+	group: (self: Parser | __callPlusType, name: string, ...InMutex) -> Parser,
+	help_max_width: (self: Parser | __callPlusType, number) -> Parser,
+	usage_margin: (self: Parser | __callPlusType, number) -> Parser,
+	help_usage_margin: (self: Parser | __callPlusType, number) -> Parser,
+	help_description_margin: (self: Parser | __callPlusType, number) -> Parser,
 }
 
 return (argparse :: any) :: typeof(setmetatable({} :: {
@@ -1702,6 +1711,6 @@ return (argparse :: any) :: typeof(setmetatable({} :: {
 			name: string?,
 			description: string?,
 			epilog: string?,
-		}) -> (Parser)
+		}) -> (Parser),
 	}))
 }))
