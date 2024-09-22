@@ -1564,7 +1564,7 @@ setmetatable(argparse, {
 })
 
 type ArgsPras = {}
-type InMutex = number & boolean
+type InMutex = number & { __brand: 'InMutex' }
 
 type args = number | string | "A-B" | "N+" | "?" | "*" | "+"
 type convert2 = () -> () | { () -> () } | { [string]: any } | typeof(tonumber) | typeof(stdio.ewrite)
@@ -1637,9 +1637,9 @@ type flag = {
 
 type mutex = {}
 
-type command = Parser
+type command = Parser & InMutex
 
-type command_target = Parser
+type command_target = Parser & InMutex
 
 type __callPlusType = typeof(setmetatable({} :: Parser, {} :: {
 	__call: (self: any, {
