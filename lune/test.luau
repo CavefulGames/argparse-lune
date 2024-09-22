@@ -1,17 +1,65 @@
 --!strict
 local argparse = require("..")
+local result = {'string'} :: any
+local test = `\{{result}\}`
 
-local parser = argparse("test")
+-- local parser = argparse("test")
+-- local init = parser:command("init", "Initializes a kitty project")
+-- init:option("--path", "Project path")
 
-parser:command("comm"):action(function()
-    
+-- local function getRegistries(registry: { [string]: string? })
+-- 	local result = {}
+-- 	for name, url in registry do
+-- 		local reg = registries[name]
+-- 		if reg and url then
+-- 			table.insert(result, reg.new(url))
+-- 		end
+-- 	end
+-- 	return result
+-- end
+
+local cli = argparse("kitty")
+local init = cli:command("init", "Initializes a kitty project")
+init:option("--path", "Project path")
+local add = cli:command("add", "Add a package but does not install them")
+add:argument("name", "Package name to add")
+add:option("--path", "Project path")
+add:flag("-C --core", "Core packages")
+add:flag("-D --dev", "Developer packages")
+
+
+local install = cli:command("install", "Fetch added packages and install them or install the target package if given")
+install:argument("target", "Package name to install"):args("?")
+install:option("--path", "Project path")
+install:flag("-C --core", "Core packages")
+install:flag("-D --dev", "Developer packages")
+install:action(function()
+	
 end)
 
-parser:option("opti"):action(function()
-    
-end):args("1+")
+local wally = cli:command("wally", "Wally commands that depends on wally")
+local wallyInit = wally:command("init", "Initialize a new Wally project")
+wallyInit:argument("path", "The path to the project to initialize. Defaults to the current directory"):args("?")
+local wallyLogin = wally:command("login", "Log into a registry")
+wallyLogin:action(function()
+	print("hi")
+end)
 
-print(parser)
+-- print(cli:get_usage())
+cli:parse()
+
+-- print(parser:usage('test'))
+-- print(parser)
+
+-- parser:command("comm"):action(function()
+
+-- end)
+
+-- parser:option("opti"):action(function()
+
+-- end):args("1+")
+
+-- print(parser)
 
 -- print(typeof(parser))
 -- parser:name('www')
@@ -36,49 +84,47 @@ print(parser)
 -- pp():pri()
 -- pp:pri()
 
-
-
 --     parser:name"t"
 -- -- parser:command('init')
 
 -- print(parser:command('w'))
 -- print(parser:action(function()
-    
+
 -- end))
 -- parser.command(parser , 'test')
 -- parser:name("test")
 
 -- print(parser:action(function()
-    
+
 -- end))
 
 -- parser:action(function(args: {})
 -- return '' , task.spawn(function()
-    
+
 -- end)
 -- end)
 -- parser:action(function()
-    
+
 -- end)
 
 -- print(parser:command"":help_max_width(10):usage_margin(01):help_description_margin(10):help_usage_margin(10):add_complete('ww'))
 -- print(parser:option("test"):help_vertical_space(22))
 
--- print(parser:group("testinggroup", 
+-- print(parser:group("testinggroup",
 -- parser:flag('t'),parser:option('w')):flag('w'))
 
 -- parser:flag("--candy")
 -- parser:flag("--no-candy"):target("candy"):action("store_false")
 -- parser:flag("--rain", "Enable rain", false):argname({'wwqweq','ttwtqwr'})
 -- print(
-    -- parser:argument("test"):convert(tonumber),
-    -- parser:argument("test"):args("1+"),
-    -- parser:argument("w"):target("w"):name("testing")
-    -- parser:option("test"):defmode("t"):args("1+")
-    -- parser:flag"T":action(function()
-        
-    -- end):init({f='22'})
-    -- parser:option("--exceptions"):args("*"):action("concat"):init({"foo", "bar"})
+-- parser:argument("test"):convert(tonumber),
+-- parser:argument("test"):args("1+"),
+-- parser:argument("w"):target("w"):name("testing")
+-- parser:option("test"):defmode("t"):args("1+")
+-- parser:flag"T":action(function()
+
+-- end):init({f='22'})
+-- parser:option("--exceptions"):args("*"):action("concat"):init({"foo", "bar"})
 -- )
 
 -- print(parser.defmode)
@@ -86,7 +132,7 @@ print(parser)
 -- parser:command("install")
 --     :require_command(false)
 
-    -- :summary("st")
+-- :summary("st")
 -- print(parser:command("install")
 --     :name("testing")
 -- :description("test"):epilog("wwww"):argument("test"))
@@ -104,7 +150,6 @@ print(parser)
 
 -- print(parser:argument("w"):args("*"):target("qwe"))
 
-
 -- parser:argument("wwww"):choices({"w"})
 
 -- -- print(parser)
@@ -112,8 +157,7 @@ print(parser)
 
 -- -- print(parser:option("test"):convert(function()
 
-
--- -- end))  
+-- -- end))
 -- -- print(parser:option("test"):convert({T=0 , R=""}):count(0))
 
 -- -- print(parser:flag("test"):name(""):description("www"):default("wqeqweq"):convert({test="test"}):args("*"):count(4))
@@ -125,7 +169,6 @@ print(parser)
 -- type main = {any}
 -- local t: main = {}
 -- t={"" , 2}
-
 
 -- local parser = argparse();
 -- parser:argument "pair"
@@ -177,7 +220,6 @@ print(parser)
 -- -- a 객체를 사용
 -- print(a.name)  -- "chat gpt"
 
-
 -- print(parser:parse())
 -- print(parser:pparse())
 
@@ -191,18 +233,16 @@ print(parser)
 --         :choices({"ttt"})
 --         :args("*")
 
-    -- parser:option("-o --output", "Output file.", "a.out"):args("1+")
-    -- parser:option("-I --include", "Include locations."):count("*")
+-- parser:option("-o --output", "Output file.", "a.out"):args("1+")
+-- parser:option("-I --include", "Include locations."):count("*")
 
-    -- parser:flag("-v --verbose", "Sets verbosity level.")
-    -- :count "0-2"
-    -- :target "verbosity"
+-- parser:flag("-v --verbose", "Sets verbosity level.")
+-- :count "0-2"
+-- :target "verbosity"
 
 -- parser:flag("t" , "P")
-            
+
 -- parser:option("test", "P")
-
-
 
 -- parser:mutex(
 --     parser:option("", "T")
@@ -211,10 +251,9 @@ print(parser)
 -- parser:command("")
 
 -- parser:option("", description)
---    :choices {"north", "south", "east", "west"}   
+--    :choices {"north", "south", "east", "west"}
 
-
--- type t2 = 
+-- type t2 =
 --     "te" |
 --     "tes2"
 

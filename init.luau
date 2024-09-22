@@ -355,6 +355,13 @@ local Option = class({
 	option_init,
 }, Argument)
 
+local Usage = class({
+	
+}, {
+	args = 1,
+	typechecked("usage", "string"),
+})
+
 function Parser:_inherit_property(name, default)
 	local element = self
 
@@ -406,6 +413,7 @@ end
 
 function Argument:_get_usage()
 	local usage = table.concat(self:_get_argument_list(), " ")
+	-- usage = self._usage or table.concat(usage, " ")
 
 	if self._default and self._defmode:find("u") then
 		if self._maxargs > 1 or (self._minargs == 1 and not self._defmode:find("a")) then
@@ -564,7 +572,7 @@ end
 function Option:_get_usage()
 	local usage = self:_get_argument_list()
 	table.insert(usage, 1, self._name)
-	usage = table.concat(usage, " ")
+	usage = self._usage or table.concat(usage, " ")
 
 	if self._mincount == 0 or self._default then
 		usage = "[" .. usage .. "]"
@@ -664,11 +672,12 @@ function Parser:mutex(...)
 	return self
 end
 
-function Parser:group(name, ...)
+function Parser:group(name: string, ...)
 	assert(type(name) == "string", ("bad argument #1 to 'group' (string expected, got %s)"):format(type(name)))
-
+	-- assert(type(usage) == "string" , ("bad argument #2 to 'group' (string expected, got %s)"):format(type(usage)))
+	
 	-- selene: allow(mixed_table)
-	local group = { name = name, ... }
+	local group = { name = name, ... } --usage = config.usage, ...  }
 
 	for i, element in ipairs(group) do
 		local mt = getmetatable(element)
@@ -679,6 +688,8 @@ function Parser:group(name, ...)
 	end
 
 	table.insert(self._groups, group)
+	
+
 	return self
 end
 
@@ -1032,13 +1043,13 @@ function Parser:get_help()
 		{ name = "Arguments", type = Argument, elements = self._arguments },
 		{ name = "Options", type = Option, elements = self._options },
 		{ name = "Commands", type = Command, elements = self._commands },
+		{ name = "Usage", type = Option, elements = self._usages },
 	}
 
 	local added_elements = {}
 
 	for _, default_group in ipairs(default_groups) do
 		local type_groups = groups_by_type[default_group.type]
-
 		for _, group in ipairs(type_groups) do
 			self:_add_group_help(blocks, added_elements, group.name .. ":", group)
 		end
@@ -1637,9 +1648,9 @@ type flag = {
 
 type mutex = {}
 
-type command = Parser
+type command = Parser & InMutex
 
-type command_target = Parser
+type command_target = Parser & InMutex
 
 type __callPlusType = typeof(setmetatable({} :: Parser, {} :: {
 	__call: (self: any, {
