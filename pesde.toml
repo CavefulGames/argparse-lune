@@ -1,5 +1,5 @@
 name = "caveful_games/argparse"
-version = "0.1.1"
+version = "0.1.2"
 description = "mpeterv/argparse for Lune"
 authors = ["Peter Melnichenko", "jiwonz <me@jiwonz.kr>", "kimpure"]
 repository = "https://github.com/CavefulGames/argparse-lune"
