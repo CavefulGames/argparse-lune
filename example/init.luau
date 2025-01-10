@@ -2,11 +2,13 @@
 local argparse = require("..")
 
 local parser = argparse()
+parser:command("test")
+parser:parse()
 
 -- print(parser:command"":help_max_width(10):usage_margin(01):help_description_margin(10):help_usage_margin(10):add_complete('ww'))
 -- print(parser:option("test"):help_vertical_space(22))
 
--- print(parser:group("testinggroup", 
+-- print(parser:group("testinggroup",
 -- parser:flag('t'),parser:option('w')):flag('w'))
 
 -- parser:flag("--candy")
@@ -18,7 +20,7 @@ local parser = argparse()
     -- parser:argument("w"):target("w"):name("testing")
     -- parser:option("test"):defmode("t"):args("1+")
     -- parser:flag"T":action(function()
-        
+
     -- end):init({f='22'})
     -- parser:option("--exceptions"):args("*"):action("concat"):init({"foo", "bar"})
 -- )
@@ -55,7 +57,7 @@ local parser = argparse()
 -- -- print(parser:option("test"):convert(function()
 
 
--- -- end))  
+-- -- end))
 -- -- print(parser:option("test"):convert({T=0 , R=""}):count(0))
 
 -- -- print(parser:flag("test"):name(""):description("www"):default("wqeqweq"):convert({test="test"}):args("*"):count(4))
@@ -141,7 +143,7 @@ local parser = argparse()
     -- :target "verbosity"
 
 -- parser:flag("t" , "P")
-            
+
 -- parser:option("test", "P")
 
 
@@ -153,10 +155,10 @@ local parser = argparse()
 -- parser:command("")
 
 -- parser:option("", description)
---    :choices {"north", "south", "east", "west"}   
+--    :choices {"north", "south", "east", "west"}
 
 
--- type t2 = 
+-- type t2 =
 --     "te" |
 --     "tes2"
 
