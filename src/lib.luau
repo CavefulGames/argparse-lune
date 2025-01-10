@@ -1703,13 +1703,14 @@ return (argparse :: any) :: typeof(setmetatable(
 		) -> typeof(setmetatable(
 			{} :: Parser,
 			{} :: {
-				__call: (self: any, {
-					name: string?,
-					description: string?,
-					epilog: string?,
-				}) -> (
-					Parser
-				),
+				__call: (
+					self: any,
+					{
+						name: string?,
+						description: string?,
+						epilog: string?,
+					}
+				) -> Parser,
 			}
 		)),
 	}
