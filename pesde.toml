@@ -1,10 +1,10 @@
 name = "caveful_games/argparse"
-version = "0.1.0"
+version = "0.1.1"
 description = "mpeterv/argparse for Lune"
-authors = ["Peter Melnichenko", "jiwonz <me@jiwonz.kr>"]
+authors = ["Peter Melnichenko", "jiwonz <me@jiwonz.kr>", "kimpure"]
 repository = "https://github.com/CavefulGames/argparse-lune"
 license = "MIT"
-includes = ["src", "pesde.toml", "README.md", "LICENSE"]
+includes = ["src/**", "pesde.toml", "README.md", "LICENSE"]
 
 [target]
 environment = "lune"
