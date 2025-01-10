@@ -1,9 +1,65 @@
 --!strict
 local argparse = require("..")
 
-local parser = argparse()
-parser:command("test")
-parser:parse()
+local parser = argparse("test")
+
+parser:command("comm"):action(function()
+
+end)
+
+parser:option("opti"):action(function()
+
+end):args("1+")
+
+print(parser)
+
+-- print(typeof(parser))
+-- parser:name('www')
+
+-- parser:argument('')
+
+-- type fns = {
+--     pri: (self: fns | typeof(setmetatable({} :: fns, {} :: fns2))) -> ()
+-- }
+
+-- type fns2 = {
+--     __call: (self: any) -> (fns)
+-- }
+
+-- local wp = {
+--     pri = function(self)
+--         print(self)
+--     end
+-- }
+
+-- local pp = (wp::any)::typeof(setmetatable({} :: fns, {} :: fns2))
+-- pp():pri()
+-- pp:pri()
+
+
+
+--     parser:name"t"
+-- -- parser:command('init')
+
+-- print(parser:command('w'))
+-- print(parser:action(function()
+
+-- end))
+-- parser.command(parser , 'test')
+-- parser:name("test")
+
+-- print(parser:action(function()
+
+-- end))
+
+-- parser:action(function(args: {})
+-- return '' , task.spawn(function()
+
+-- end)
+-- end)
+-- parser:action(function()
+
+-- end)
 
 -- print(parser:command"":help_max_width(10):usage_margin(01):help_description_margin(10):help_usage_margin(10):add_complete('ww'))
 -- print(parser:option("test"):help_vertical_space(22))
